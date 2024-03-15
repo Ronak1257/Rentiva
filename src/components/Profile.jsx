@@ -3,9 +3,36 @@ import { ethers } from "ethers";
 
 const Profile = ({ walletAddress, walletAbi, account, userProperty, showproperty ,handleState,changeProduct}) => {
     const [property, setProperty] = useState(userProperty);
-    const LeaseProperty = (propertyId, owner) => {
+    const LeaseProperty = (propertyId) => {
         handleState("Listproperty");
         changeProduct(propertyId);
+    }
+    const ReleaseProperty=async (propertyId)=>{
+        console.log('hello');
+        try {
+            if (window.ethereum) {
+              // Request account access if needed
+              await window.ethereum.request({ method: 'eth_requestAccounts' });
+              const provider = new ethers.providers.Web3Provider(window.ethereum);
+              const signer = provider.getSigner();
+              const walletContract = new ethers.Contract(walletAddress, walletAbi, signer);
+              console.log(walletContract);
+        
+              const result = await walletContract.releaseProperty(
+                propertyId,'0x25a1148ea2F07083f5E08AF20c9A69cC382B4ee3'
+              );
+              
+              // Display transaction hash
+              console.log('Txn Hash:', result.hash);
+              
+              // Optionally, update UI or perform other actions after successful transaction
+            } else {
+              throw new Error('MetaMask not installed or not detected');
+            }
+          } catch (error) {
+            console.error('Error:', error.message);
+            // You can handle the error here, for example, display a message to the user
+          }
     }
     return (
         <div>
@@ -38,8 +65,17 @@ const Profile = ({ walletAddress, walletAbi, account, userProperty, showproperty
                                 {
                                     !item[10] && (
                                         <div className=" text-center mb-8">
-                                            <button onClick={() => { LeaseProperty(Number(item[0]), item[3], item[1]) }} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                                            <button onClick={() => { LeaseProperty(Number(item[0])) }} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                                                 Lease Now
+                                            </button>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    item[10] && (
+                                        <div className=" text-center mb-8">
+                                            <button onClick={() => { ReleaseProperty(Number(item[0])) }} className="mt-4 bg-green-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                                                Release Property
                                             </button>
                                         </div>
                                     )
