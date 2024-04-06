@@ -43,7 +43,7 @@ const Home = ({walletAddress,walletAbi, listedProperty, showproperty, handleStat
                         className="shadow-xl hover:ring ring-navyblue-200 rounded-xl border ml-6 p-3 hover:scale-110 duration-500 hover:bg-zinc-200 mx-auto"
                         id="card"
                         >
-                            {console.log(item)}
+                            {/* {console.log(item)} */}
                             {/* <p>{console.log(item)}</p> */}
 
                             <div className="mt-5 -overflow-hidden flex justify-center" id="card-img">

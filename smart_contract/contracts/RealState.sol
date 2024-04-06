@@ -114,13 +114,13 @@ contract RealState{
         uint256 itemCount=0;
         uint256 currentIndex=0;
         for(uint256 i=0;i<totalItemCount;i++){
-            if(properties[i].list==true){
+            if(properties[i].list==true && properties[i].lease==false){
                 itemCount++;
             }
         }
         Property[] memory items=new Property[](itemCount);
         for(uint256 i=0;i<totalItemCount;i++){
-            if(properties[i].list==true){
+            if(properties[i].list==true && properties[i].lease==false){
                 Property storage currentItem=properties[i];
                 items[currentIndex]=currentItem;
                 currentIndex++;

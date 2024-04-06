@@ -6,7 +6,7 @@ async function main() {
 
   await realState.deployed();
 
-  console.log("Library deployed to:", realState.address);
+  console.log("Real State deployed to:", realState.address);
 }
 
 main().catch((error) => {

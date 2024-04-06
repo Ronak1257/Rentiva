@@ -17,9 +17,91 @@ function App() {
   const [property,setProperty]=useState();
   const [productId,setProductId]=useState('');
   const [Owner,setOwner]=useState('0x25a1148ea2F07083f5E08AF20c9A69cC382B4ee3');
-  const walletAddress='0x330a123C29B966f58a2b634C50017EA13940430d';
+  const walletAddress='0xB9CaF5cc444B4603C6664A3D60922B76C24688A1';
   const provierApi='https://sepolia.infura.io/v3/87330cb0d1304f8ebcfe156fedf0d0e3';
   const walletAbi=[
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_propertyTitle",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_images",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_proprertyAddress",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
+        }
+      ],
+      "name": "createProperty",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "productId",
+          "type": "uint256"
+        }
+      ],
+      "name": "leaseProperty",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "productId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_time",
+          "type": "uint256"
+        }
+      ],
+      "name": "listProperty",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
     {
       "anonymous": false,
       "inputs": [
@@ -110,32 +192,12 @@ function App() {
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_propertyTitle",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_images",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_proprertyAddress",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_description",
-          "type": "string"
+          "internalType": "uint256",
+          "name": "productId",
+          "type": "uint256"
         }
       ],
-      "name": "createProperty",
+      "name": "releaseProperty",
       "outputs": [
         {
           "internalType": "uint256",
@@ -303,13 +365,7 @@ function App() {
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "getUserProperties",
       "outputs": [
         {
@@ -384,58 +440,6 @@ function App() {
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "productId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_tenant",
-          "type": "address"
-        }
-      ],
-      "name": "leaseProperty",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "productId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_price",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_time",
-          "type": "uint256"
-        }
-      ],
-      "name": "listProperty",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "propertyIndex",
       "outputs": [
@@ -447,40 +451,15 @@ function App() {
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "productId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "releaseProperty",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
     }
   ]
   const provider=new ethers.providers.JsonRpcProvider(provierApi);
   const walletContract=new ethers.Contract(walletAddress,walletAbi,provider);
-
   const handleAccount = async(acc) => {
     const getProperty=await walletContract.getListedProperty();
     setListedProperty(getProperty);
-    console.log(acc);
-    const getUserProperty=await walletContract.getUserProperties('0x25a1148ea2F07083f5E08AF20c9A69cC382B4ee3');
+    console.log(getProperty);
+    const getUserProperty=await walletContract.getUserProperties();
     setUserProperty(getUserProperty);
     console.log(getUserProperty);
     setAccount(acc);
